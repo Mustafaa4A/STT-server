@@ -2,15 +2,12 @@ from middleware.auth import verifyToken
 from transcription.route import transcription
 from auth.route import authenticate
 from flask import Flask, request, jsonify, Blueprint, make_response
-import json
-from bson import json_util
-import jwt
-from functools import wraps
+from flask_cors import CORS
 from mongoengine import connect
 
 
 app = Flask(__name__)
-
+CORS(app)
 
 # connect mongo db
 connect(host="mongodb://127.0.0.1:27017/asr_web")
@@ -40,18 +37,18 @@ def parse_json():
 @app.get("/")
 @verifyToken
 def index():
-  return jsonify({
+  return {
       "status": True,
       "data": "data_dict"
-  })
+  }
 
 
 @app.post("/")
 @verifyToken
 def get_index():
-  name = request.body["name"]
+  # name = request.body["name"]
   return {
-      "user": request.user
+      "user": "request.user"
   }
 
 

@@ -12,6 +12,7 @@ pyjwt = "*"
 python-dotenv = "*"
 flask-mongoengine = "*"
 mongoengine = "*"
+flask-cors = "*"
 
 [dev-packages]
 

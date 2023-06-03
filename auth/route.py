@@ -3,10 +3,9 @@ import jwt
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 import os
-import json
-from bson import json_util
 from .model import User
 from .controller import get_user
+from mongoengine.errors import ValidationError, NotUniqueError
 
 load_dotenv()
 
@@ -35,8 +34,10 @@ def login():
 
   return {
       "status": True,
-      "user": user.to_dict(),
-      "token": token
+      "data": {
+          "user": user.to_dict(),
+          "token": token
+      }
   }
 
 
@@ -52,8 +53,13 @@ def register():
 
     return {
         "status": True,
-        "data": User.objects.find({"username": username})
+        "data": user.to_dict()
     }
+  except ValidationError as error:
+    return {"status": False, "message": str(error)}, 400
+
+  except NotUniqueError as error:
+    return {"status": False, "message": "The username already exists"}, 400
 
   except Exception as error:
     return {"status": False, "message": error}, 400

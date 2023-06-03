@@ -6,9 +6,9 @@ from mongoengine.signals import pre_save
 
 
 class User(Document):
-  fullname = StringField(required=True)
+  fullname = StringField(required=True,  min_length=3, max_length=200)
   username = StringField(required=True, unique=True,
-                         min_length=2, max_length=10)
+                         min_length=4, max_length=50)
   password = StringField(required=True)
   tokens = IntField(default=1000)
   created_date = DateTimeField(default=datetime.datetime.now())

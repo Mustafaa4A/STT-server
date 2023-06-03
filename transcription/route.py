@@ -5,7 +5,7 @@ from utils.transcripe import stt
 from middleware.auth import verifyToken
 
 
-transcription = Blueprint("transcription", __name__, url_prefix="/transcripe")
+transcription = Blueprint("transcription", __name__, url_prefix="/transcribe")
 
 
 @transcription.get("/")
@@ -19,13 +19,20 @@ def index():
 @transcription.post("/")
 @verifyToken
 def upload():
-  name = request.form["name"]
   file = request.files["file"]
 
-  text = stt(audio=file)
+  try:
+    text = stt(audio=file)
+  except Exception as err:
+    return {
+        "status": False,
+        "message": str(err)
+    }
+
+  if not text:
+    return {"status": False, "message": "Process Failed"}, 400
 
   return {
       "status": True,
-      "name": name,
-      "file": text
+      "data": text
   }
