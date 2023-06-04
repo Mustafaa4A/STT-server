@@ -4,6 +4,7 @@ from auth.route import authenticate
 from flask import Flask, request, jsonify, Blueprint, make_response
 from flask_cors import CORS
 from mongoengine import connect
+import os
 
 
 app = Flask(__name__)

@@ -26,8 +26,8 @@ def upload():
   except Exception as err:
     return {
         "status": False,
-        "message": str(err)
-    }
+        "message": "Process Failed"
+    }, 400
 
   if not text:
     return {"status": False, "message": "Process Failed"}, 400
